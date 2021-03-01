@@ -1,0 +1,103 @@
+<html>
+<SCRIPT>    
+// Opens script tag
+
+    var pos = 0;
+    // Defines a variable named pos and assigns it the initial value of 0.
+
+    let pageWidth = window.innerWidth;
+    // Defines a variable pageWidth at window.innerWidth. This is the width of the browser window.
+
+    const pacArray = [      
+    // Defines a 2 dimensional array containing references to PacMan images.
+        ['PacMan1.png', 'PacMan2.png'],  
+        // Index 0 array, PacMan1.png at [0][0] and PacMan2.png at [0][1].
+        // These images are right-facing PacMan with mouth open and closed.
+
+        ['PacMan3.png', 'PacMan4.png']   
+        // Index 1 array, PacMan3.png at [1][0] and PacMan4.png at [1][1].
+        // These images are left-facing PacMan with mouth open and closed.  
+
+    ];      
+    // Closes the pacArray 2-dimensional array.
+
+    var direction = 0;      
+    // Defines a variable direction assigned the initial value of 0. (Remember - 0 in boolean is FALSE.)
+
+    var focus = 0;
+    // Defines a variable focus assigned the value of 0. (Remember - 0 in boolean is FALSE.)
+
+    function Run() {
+        // Defines a function named Run that will perform the following tasks:
+
+        let img = document.getElementById("PacMan");
+        // Defines a function-scoped variable named img that accesses the HTML document element named "PacMan" (See line 100.)
+        // This is the "handle" in which changes to the "PacMan" element will be made.
+
+        let imgWidth = img.width
+        // Defines a function-scoped variable named imgWidth that is assigned the width value of the HTML document element named "PacMan", which is accessed by the "handle" variable img defined above. (See Line 33 & 100)
+
+        focus = (focus + 1) % 2;
+        // Updates the global variable focus by adding 1 to the value. Then it divides by 2 and returns the remainder of 1 for odd numbers and 0 for even numbers.
+        // This is what changes the PacMan images from the mouth open to the mouth closed images.
+
+        direction = checkPageBounds(direction, imgWidth, pos, pageWidth);
+        // Updates the global variable of direction by calling on another function checkPageBounds with the arguments direction, imgWidth, pos and pageWidth passed into that function.
+        // When this line is reached in the function Run, it will pause and jump to function checkPageBounds to update the direction value in the rest of the block to the one returned from that function. (See Line 80 to 91) 
+
+        img.src = pacArray[direction][focus];
+        // Changes the image source in the HTML element "PacMan" to another image referenced from the pacArray two-dimensional array.
+        // The first set of brackets is direction (0 or 1), and the second set of brackets is the focus (0 or 1).
+
+        if (direction) {
+        // Opens a conditonal statement that is checking the value of direction. Remember, in boolean 0 is FALSE and 1 (or any number besides 0) is TRUE.
+
+            pos -= 20;
+            // Changes the value of the variable pos by - 20 (left across the screen) if direction = True (1).
+
+            img.style.left = pos + "px";
+            // Accesses the left style of the HTML document element "PacMan" using the img handle and updates it to newly calculated value of pos in units of pixels.
+
+        } else {
+        // Second half of the conditional statement that is also checking the value of direction. Remember, in boolean 0 is FALSE and 1 (or any other number besides 0) is TRUE.
+
+            pos += 20;
+            // Changes the value of the variable pos by + 20 (right across the screen) if direction = False (0).
+
+            img.style.left = pos + 'px';
+            //Accesses the left style of the HTML document element "PacMan" using the img handle and updates it to the newly calculated value of pos in units of pixels.
+
+        }
+        // Closes the if...else conditonal statement.
+
+    };
+    // Closes the function Run. All function scoped variables cease to exist until the function is fired again.
+
+    setInterval (Run, 100)
+    // Sets the function Run to execute in invervals 100 ms.
+    // This is what animates the Pac-Man!
+
+    function checkPageBounds(direction, imgWidth) {
+        // Defines the funtion checkPageBounds that is called upon in the function Run and passed in the arguments direction and imgWidth.
+
+        if (direction === 0 && pos + imgWidth > pageWidth) direction = 1;
+        // Opens a conditional statement that is checking logic using the entered arguments.
+        // It reads: If the direction is 0, and the (pos + imgWidth) value is greater than the pageWidth value, then change direction variable to equal 1 (True).
+
+        if (direction === 1 && pos < 0) direction = 0;
+        // Opens a conditional statment that is checking logic using the entered arguments.
+        // It reads: If the direction is 1, and pos is less than 0, then change the direction variable to equal 0.
+
+        return direction;
+        // This returns the value of direction (either 0 or 1) back into the function Run. (See Line 44)
+    }
+    // Closes the function checkPageBounds.
+
+//This closes the script tag.
+</SCRIPT>
+
+<body>
+    <img id="PacMan" src="PacMan1.png" width='200' onclick="Run()" style="position:absolute"> </img>
+</body>
+
+</html>
